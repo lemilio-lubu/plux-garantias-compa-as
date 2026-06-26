@@ -1,0 +1,106 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --ink:      #15171c;
+    --graphite: #22262f;
+    --steel:    #69707e;
+    --mist:     #e2e5e9;
+    --paper:    #f4f5f3;
+    --amber:    #f5b301;
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: var(--paper);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  ::selection {
+    background-color: var(--amber);
+    color: var(--ink);
+  }
+
+  /* Focus ring tuned to the brand accent */
+  :focus-visible {
+    outline: none;
+  }
+
+  /* Thin instrument-style scrollbar */
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--mist); border-radius: 99px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--steel); }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+
+  /* Mono data treatment — VINs, OTs, km, codes, prices read as readouts */
+  .data {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+
+  /* Eyebrow / instrument label */
+  .eyebrow {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  /* The signature hazard strip */
+  .hazard-strip {
+    background-image: repeating-linear-gradient(-45deg, #f5b301 0 10px, #15171c 10px 20px);
+  }
+
+  /* Quantity bar: GPU-only scaleX, strong ease-out (see emil-design-eng) */
+  .progress-fill {
+    transform-origin: left;
+    transition: transform 340ms var(--ease-out), background-color 300ms ease;
+  }
+
+  .animate-rise { animation: rise 360ms var(--ease-out) forwards; }
+  .animate-pop  { animation: pop 320ms var(--ease-out); }
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes pop {
+  0%   { transform: scale(0.9); }
+  60%  { transform: scale(1.04); }
+  100% { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
