@@ -1,3 +1,6 @@
+from typing import Optional
+from uuid import UUID
+
 from application.dto.dashboard import DashboardDTO, StatusCount, TypeStatusCount
 from domain.value_objects.srg_status import SrgStatus
 from domain.value_objects.srg_type import SrgType
@@ -9,8 +12,8 @@ class GetDashboardUseCase:
     def __init__(self, repository) -> None:
         self._repository = repository
 
-    def execute(self, concesionaria: str) -> DashboardDTO:
-        raw = self._repository.get_dashboard_stats(concesionaria)
+    def execute(self, concesionaria: str, asesor_id: Optional[UUID] = None) -> DashboardDTO:
+        raw = self._repository.get_dashboard_stats(concesionaria, asesor_id=asesor_id)
 
         total = sum(row["count"] for row in raw)
 

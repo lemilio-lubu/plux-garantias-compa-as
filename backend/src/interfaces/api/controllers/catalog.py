@@ -34,15 +34,15 @@ from interfaces.api.serializers.catalog import (
 
 
 class CatalogParamViewSet(ViewSet):
-    permission_classes = [IsJefeTallerOrAbove]
+    permission_classes = [IsAsesorOrAbove]
 
     def get_permissions(self):
         # Catalog params are reference data the SRG creation form depends on,
         # so any authenticated user (e.g. ASESOR) may read them. Mutating the
-        # catalog stays restricted to Jefe de Taller and above.
+        # catalog is now also available for Asesores.
         if self.action == "list":
             return [IsAuthenticated()]
-        return [IsJefeTallerOrAbove()]
+        return [IsAsesorOrAbove()]
 
     def list(self, request: Request) -> Response:
         param_type = request.query_params.get("type", "")

@@ -1,3 +1,4 @@
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -6,7 +7,6 @@ from rest_framework import serializers
 from application.use_cases.srg.get_dashboard import GetDashboardUseCase
 from infrastructure.persistence.models.user import UserRole
 from infrastructure.persistence.repositories.srg_repository import DjangoSrgRepository
-from interfaces.api.permissions.roles import IsJefeTallerOrAbove
 
 
 class StatusCountSerializer(serializers.Serializer):
@@ -29,13 +29,17 @@ class DashboardSerializer(serializers.Serializer):
 
 
 class DashboardView(APIView):
-    permission_classes = [IsJefeTallerOrAbove]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request: Request) -> Response:
-        concesionaria = (
-            request.query_params.get("concesionaria")
-            if request.user.role == UserRole.SUPER_ADMIN
-            else request.user.concesionaria
-        )
-        stats = GetDashboardUseCase(DjangoSrgRepository()).execute(concesionaria)
+        role = request.user.role
+
+        if role == UserRole.SUPER_ADMIN:
+            concesionaria = request.query_params.get("concesionaria") or request.user.concesionaria
+        else:
+            concesionaria = request.user.concesionaria
+
+        asesor_id = request.user.id if role == UserRole.ASESOR else None
+
+        stats = GetDashboardUseCase(DjangoSrgRepository()).execute(concesionaria, asesor_id=asesor_id)
         return Response(DashboardSerializer(stats).data)

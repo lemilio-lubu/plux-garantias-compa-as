@@ -90,10 +90,12 @@ class DjangoSrgRepository(ISrgRepository):
     def delete(self, id: UUID) -> None:
         Srg.objects.filter(id=id).update(deleted_at=datetime.now(timezone.utc))
 
-    def get_dashboard_stats(self, concesionaria: str) -> list[dict]:
+    def get_dashboard_stats(self, concesionaria: str, asesor_id=None) -> list[dict]:
+        qs = Srg.objects.filter(concesionaria=concesionaria, deleted_at__isnull=True)
+        if asesor_id is not None:
+            qs = qs.filter(asesor_id=asesor_id)
         rows = (
-            Srg.objects.filter(concesionaria=concesionaria, deleted_at__isnull=True)
-            .values("srg_type", "status")
+            qs.values("srg_type", "status")
             .annotate(count=Count("id"))
             .order_by("srg_type", "status")
         )
