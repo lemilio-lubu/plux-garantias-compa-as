@@ -39,13 +39,7 @@ const NAV_ITEMS: NavItem[] = [
     href: "/catalog",
     label: "Catálogo",
     icon: Package,
-    roles: ["SUPER_ADMIN", "JEFE_TALLER"],
-  },
-  {
-    href: "/repuestos",
-    label: "Repuestos",
-    icon: Package,
-    roles: ["ASESOR"],
+    roles: ["SUPER_ADMIN", "JEFE_TALLER", "ASESOR"],
   },
   {
     href: "/audits",

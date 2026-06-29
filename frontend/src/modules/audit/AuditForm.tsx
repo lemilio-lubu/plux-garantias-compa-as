@@ -144,7 +144,7 @@ export function AuditForm({ audit }: Props) {
                 </Button>
               </div>
             ))}
-            <Button variant="secondary" size="sm" type="button" onClick={() => emails.append({ email: "" })}>
+            <Button size="sm" type="button" onClick={() => emails.append({ email: "" })}>
               <Plus size={14} /> Agregar correo
             </Button>
           </div>
@@ -161,7 +161,7 @@ export function AuditForm({ audit }: Props) {
                 </Button>
               </div>
             ))}
-            <Button variant="secondary" size="sm" type="button"
+            <Button size="sm" type="button"
               onClick={() => attachments.append({ file_name: "", file_url: "" })}>
               <Plus size={14} /> Agregar archivo
             </Button>
