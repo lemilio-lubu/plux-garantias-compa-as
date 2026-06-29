@@ -10,6 +10,7 @@ class SrgSerializer(serializers.Serializer):
     concesionaria = serializers.CharField(read_only=True)
     asesor_id = serializers.UUIDField(read_only=True)
     vin = serializers.CharField(read_only=True)
+    placa = serializers.CharField(read_only=True)
     vehicle_model = serializers.CharField(read_only=True)
     vehicle_color = serializers.CharField(read_only=True)
     vehicle_year = serializers.IntegerField(read_only=True)
@@ -31,6 +32,7 @@ class CreateWarrantySrgSerializer(serializers.Serializer):
         error_messages={"invalid": "La OT solo admite letras y números (alfanumérico)."},
     )
     vin = serializers.CharField(max_length=17)
+    placa = serializers.CharField(max_length=10)
     vehicle_model = serializers.CharField(max_length=50)
     vehicle_color = serializers.CharField(max_length=50)
     vehicle_year = serializers.IntegerField(min_value=2000, max_value=2100)
@@ -48,6 +50,7 @@ class CreateCampaignSrgSerializer(serializers.Serializer):
         error_messages={"invalid": "La OT solo admite letras y números (alfanumérico)."},
     )
     vin = serializers.CharField(max_length=17)
+    placa = serializers.CharField(max_length=10)
     vehicle_model = serializers.CharField(max_length=50)
     vehicle_year = serializers.IntegerField(min_value=2000, max_value=2100)
     km_apertura = serializers.IntegerField(min_value=0)
@@ -58,6 +61,7 @@ class CreateCampaignSrgSerializer(serializers.Serializer):
 class UpdateSrgSerializer(serializers.Serializer):
     # Common
     vin = serializers.CharField(max_length=17, required=False)
+    placa = serializers.CharField(max_length=10, required=False)
     vehicle_model = serializers.CharField(max_length=50, required=False)
     vehicle_color = serializers.CharField(max_length=50, required=False)
     vehicle_year = serializers.IntegerField(min_value=2000, max_value=2100, required=False)

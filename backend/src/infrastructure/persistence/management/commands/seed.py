@@ -114,9 +114,15 @@ class Command(BaseCommand):
             action="store_true",
             help="Delete existing demo SRGs and audits before seeding.",
         )
+        parser.add_argument(
+            "--admin-only",
+            action="store_true",
+            help="Seed ONLY the superadmin user (no mock/demo data).",
+        )
 
     @transaction.atomic
     def handle(self, *args, **options):
+        admin_only = options["admin_only"]
         if options["flush"]:
             Audit.objects.all().delete()
             SrgEvent.objects.all().delete()
@@ -125,18 +131,41 @@ class Command(BaseCommand):
             Srg.objects.all().delete()
             self.stdout.write(self.style.WARNING("Flushed existing SRGs and audits."))
 
-        users = self._seed_users()
-        self._seed_catalog()
-        srgs = self._seed_srgs(users)
-        self._seed_audits(srgs, users["auditor@plux.com"])
+        if admin_only:
+            users = self._seed_admin_only()
+            self.stdout.write(self.style.SUCCESS("\nAdmin seed complete."))
+            self.stdout.write(f"  Users:   {User.objects.count()}")
+        else:
+            users = self._seed_users()
+            self._seed_catalog()
+            srgs = self._seed_srgs(users)
+            self._seed_audits(srgs, users["auditor@plux.com"])
 
-        self.stdout.write(self.style.SUCCESS("\nSeed complete."))
-        self.stdout.write(f"  Users:   {User.objects.count()}")
-        self.stdout.write(f"  SRGs:    {Srg.objects.count()}")
-        self.stdout.write(f"  Catalog: {CatalogParam.objects.count()} params, {SparePart.objects.count()} parts")
-        self.stdout.write(f"  Parts:   {SrgPart.objects.count()} on SRGs, {SrgEvent.objects.count()} trace events")
-        self.stdout.write(f"  Audits:  {Audit.objects.count()}")
-        self.stdout.write(self.style.HTTP_INFO(f"\n  All demo accounts use the password: {DEMO_PASSWORD}"))
+            self.stdout.write(self.style.SUCCESS("\nSeed complete."))
+            self.stdout.write(f"  Users:   {User.objects.count()}")
+            self.stdout.write(f"  SRGs:    {Srg.objects.count()}")
+            self.stdout.write(f"  Catalog: {CatalogParam.objects.count()} params, {SparePart.objects.count()} parts")
+            self.stdout.write(f"  Parts:   {SrgPart.objects.count()} on SRGs, {SrgEvent.objects.count()} trace events")
+            self.stdout.write(f"  Audits:  {Audit.objects.count()}")
+            self.stdout.write(self.style.HTTP_INFO(f"\n  All demo accounts use the password: {DEMO_PASSWORD}"))
+
+    def _seed_admin_only(self) -> dict[str, User]:
+        import os
+        email = os.environ.get("ADMIN_EMAIL", "superadmin@plux.com")
+        password = os.environ.get("ADMIN_PASSWORD", DEMO_PASSWORD)
+
+        user, _ = User.objects.get_or_create(email=email)
+        user.first_name = "Super"
+        user.last_name = "Admin"
+        user.role = UserRole.SUPER_ADMIN
+        user.concesionaria = ""
+        user.is_active = True
+        user.is_staff = True
+        user.is_superuser = True
+        user.set_password(password)
+        user.save()
+        self.stdout.write(self.style.SUCCESS(f"Super Admin user ready: {email}"))
+        return {email: user}
 
     # ── Users ──────────────────────────────────────────────────────────────
     def _seed_users(self) -> dict[str, User]:
@@ -224,6 +253,7 @@ class Command(BaseCommand):
                 "concesionaria": dealer,
                 "asesor": advisor[dealer],
                 "vin": _vin(seq),
+                "placa": f"PXA-{1000 + seq}",
                 "vehicle_model": model_name,
                 "vehicle_color": color_name,
                 "vehicle_year": 2019 + (seq % 6),

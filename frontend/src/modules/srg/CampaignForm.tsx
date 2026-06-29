@@ -11,6 +11,7 @@ import { CONCESIONARIA_OPTIONS } from "@/types/auth";
 const schema = z.object({
   ot:             z.string().min(1, "OT requerida").max(20, "Máximo 20 caracteres").regex(/^[A-Z0-9]+$/, "Solo mayúsculas y números"),
   vin:            z.string().length(17, "El VIN debe tener 17 caracteres"),
+  placa:          z.string().min(1, "Placa requerida").max(10, "Máximo 10 caracteres"),
   vehicle_model:  z.string().min(1),
   vehicle_year:   z.coerce.number().min(2000).max(2100),
   km_apertura:    z.coerce.number().min(0),
@@ -63,6 +64,7 @@ export function CampaignForm() {
               {...register("campaign_code")}
             />
             <Input label="VIN" maxLength={17} placeholder="17 caracteres" error={errors.vin?.message} {...register("vin")} />
+            <Input label="Placa" maxLength={10} placeholder="Ej. PXA-1234" error={errors.placa?.message} {...register("placa")} />
             <Select
               label="Modelo"
               options={[{ value: "", label: "Seleccionar..." }, ...models.map(m => ({ value: m.code, label: m.name }))]}

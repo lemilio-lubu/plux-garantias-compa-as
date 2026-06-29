@@ -139,6 +139,7 @@ class SrgPartMovementView(APIView):
             actor_id=request.user.id,
             actor_role=role,
             note=serializer.validated_data.get("note", ""),
+            location=serializer.validated_data.get("location", "").upper(),
         )
         try:
             event = RegisterPartMovementUseCase(_part_repo(), _event_repo()).execute(dto)

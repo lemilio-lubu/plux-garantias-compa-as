@@ -56,6 +56,7 @@ class RegisterPartMovementSerializer(serializers.Serializer):
     event_type = serializers.ChoiceField(choices=MOVEMENT_CHOICES)
     quantity = serializers.IntegerField(min_value=1)
     note = serializers.CharField(max_length=255, required=False, allow_blank=True, default="")
+    location = serializers.CharField(max_length=100, required=False, allow_blank=True, default="")
 
 
 class SrgEventSerializer(serializers.Serializer):
@@ -71,6 +72,7 @@ class SrgEventSerializer(serializers.Serializer):
     state_from = serializers.CharField(read_only=True)
     state_to = serializers.CharField(read_only=True)
     note = serializers.CharField(read_only=True)
+    location = serializers.CharField(read_only=True)
     created_at = serializers.DateTimeField(read_only=True)
 
 

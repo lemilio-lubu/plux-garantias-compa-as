@@ -1,7 +1,7 @@
 "use client";
 import { use } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Trash2 } from "lucide-react";
+import { AlertTriangle, ArrowLeft, Trash2 } from "lucide-react";
 import {
   Button, Card, CardContent, CardHeader, CardTitle,
   PageSpinner, Small,
@@ -102,6 +102,7 @@ export default function SrgDetailPage({ params }: { params: Promise<{ id: string
         <CardContent>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
             <Field label="VIN"           value={srg.vin} />
+            <Field label="Placa"         value={srg.placa} />
             <Field label="Modelo"        value={srg.vehicle_model} />
             {srg.srg_type === "WARRANTY" && <Field label="Color" value={srg.vehicle_color} />}
             <Field label="Año"           value={srg.vehicle_year} />
@@ -152,6 +153,22 @@ export default function SrgDetailPage({ params }: { params: Promise<{ id: string
             <CampaignBodyForm srg={srg} />
           </CardContent>
         </Card>
+      )}
+
+      {/* Audit compliance warning — shown when process is complete */}
+      {(srg.status === "APROBADO" || srg.status === "RETORNADO") && (
+        <div className="animate-rise flex gap-3 items-start rounded-lg border border-amber/40 bg-amber/[0.07] px-4 py-3">
+          <AlertTriangle size={16} className="shrink-0 mt-0.5 text-amber" />
+          <div>
+            <p className="text-small font-semibold text-[#8a6500]">
+              Proceso finalizado — Documentación obligatoria para auditoría
+            </p>
+            <p className="mt-0.5 text-caption text-[#8a6500]/80">
+              Asegurate de que todos los documentos estén completos y correctamente archivados.
+              El incumplimiento de las reglas de documentación puede resultar en una multa.
+            </p>
+          </div>
+        </div>
       )}
 
       {/* Traceability timeline */}

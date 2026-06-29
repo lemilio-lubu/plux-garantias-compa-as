@@ -9,6 +9,7 @@ class CreateWarrantySrgDTO:
     asesor_id: UUID
     ot: str
     vin: str
+    placa: str
     vehicle_model: str
     vehicle_color: str
     vehicle_year: int
@@ -25,6 +26,7 @@ class CreateCampaignSrgDTO:
     asesor_id: UUID
     ot: str
     vin: str
+    placa: str
     vehicle_model: str
     vehicle_year: int
     km_apertura: int

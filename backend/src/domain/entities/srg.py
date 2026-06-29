@@ -19,6 +19,7 @@ class SrgEntity(BaseEntity):
 
     # Common header fields
     vin: str = ""
+    placa: str = ""
     vehicle_model: str = ""
     vehicle_color: str = ""
     vehicle_year: int = 0

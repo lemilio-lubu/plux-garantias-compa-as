@@ -48,6 +48,7 @@ class RegisterPartMovementUseCase:
             event_type=event_type.value,
             quantity=dto.quantity,
             note=dto.note,
+            location=dto.location,
         )
         return self._event_repo.save(event)
 

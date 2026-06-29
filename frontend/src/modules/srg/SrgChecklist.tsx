@@ -78,14 +78,58 @@ function MoveControl({
   );
 }
 
+function ReturnConfirmControl({
+  max, pending, onSubmit,
+}: {
+  max: number; pending: boolean;
+  onSubmit: (qty: number, location: string) => void;
+}) {
+  const [qty, setQty] = useState(1);
+  const [location, setLocation] = useState("");
+  const clamped = Math.max(1, Math.min(qty || 1, max));
+  const canSubmit = location.trim().length > 0;
+  return (
+    <div className="rounded-lg border border-amber/30 bg-amber/5 p-3 space-y-2">
+      <p className="text-caption font-medium text-[#8a6500] uppercase tracking-wide">Confirmar devolución</p>
+      <div className="flex flex-wrap items-end gap-2">
+        <Input
+          label={`Cantidad (máx ${max})`}
+          type="number"
+          min={1}
+          max={max}
+          value={qty}
+          onChange={(e) => setQty(Number(e.target.value))}
+          className="h-9 w-28"
+        />
+        <Input
+          label="Ubicación en bodega"
+          placeholder="Ej. ESTANTE-A3"
+          value={location}
+          onChange={(e) => setLocation(e.target.value.toUpperCase())}
+          className="h-9 w-44"
+        />
+        <Button
+          size="sm"
+          loading={pending}
+          disabled={!canSubmit}
+          onClick={() => onSubmit(clamped, location.trim())}
+          className="h-9"
+        >
+          <Check size={14} />
+        </Button>
+      </div>
+    </div>
+  );
+}
+
 function PartCard({
   srgId, part, canReceive, canWork,
 }: {
   srgId: string; part: PartLedger; canReceive: boolean; canWork: boolean;
 }) {
   const move = useRegisterMovement(srgId);
-  const submit = (event_type: string) => (quantity: number) =>
-    move.mutate({ partId: part.id, event_type, quantity });
+  const submit = (event_type: string) => (quantity: number, location?: string) =>
+    move.mutate({ partId: part.id, event_type, quantity, ...(location ? { location } : {}) });
 
   const rec = RECEPTION_STYLE[part.reception_state];
   const ret = RETURN_STYLE[part.return_state];
@@ -142,7 +186,7 @@ function PartCard({
           <MoveControl label="Devolver core" icon={<Minus size={14} />} max={toDeclare} pending={move.isPending} onSubmit={submit("CORE_RETURN_DECLARED")} />
         )}
         {canReceive && toConfirm > 0 && (
-          <MoveControl label="Confirmar dev." icon={<Check size={14} />} max={toConfirm} pending={move.isPending} onSubmit={submit("RETURN_CONFIRMED")} />
+          <ReturnConfirmControl max={toConfirm} pending={move.isPending} onSubmit={submit("RETURN_CONFIRMED")} />
         )}
       </div>
 

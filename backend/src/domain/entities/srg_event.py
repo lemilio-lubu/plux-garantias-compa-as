@@ -16,6 +16,7 @@ class SrgEventEntity(BaseEntity):
     state_from: str = ""
     state_to: str = ""
     note: str = ""
+    location: str = ""
     # Read-only labels enriched by the repository for timeline display.
     actor_label: str = ""
     part_label: str = ""

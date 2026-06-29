@@ -22,6 +22,7 @@ class CreateCampaignSrgUseCase:
             concesionaria=dto.concesionaria,
             asesor_id=dto.asesor_id,
             vin=dto.vin.upper(),
+            placa=dto.placa.upper(),
             vehicle_model=dto.vehicle_model.upper(),
             vehicle_year=dto.vehicle_year,
             km_apertura=dto.km_apertura,

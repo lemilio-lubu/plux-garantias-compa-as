@@ -80,7 +80,7 @@ export function useAddPart(srgId: string) {
 export function useRegisterMovement(srgId: string) {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ partId, ...data }: { partId: string; event_type: string; quantity: number; note?: string }) =>
+    mutationFn: ({ partId, ...data }: { partId: string; event_type: string; quantity: number; note?: string; location?: string }) =>
       srgService.registerMovement(srgId, partId, data),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: KEYS.parts(srgId) });

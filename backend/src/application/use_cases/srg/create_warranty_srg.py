@@ -22,6 +22,7 @@ class CreateWarrantySrgUseCase:
             concesionaria=dto.concesionaria,
             asesor_id=dto.asesor_id,
             vin=dto.vin.upper(),
+            placa=dto.placa.upper(),
             vehicle_model=dto.vehicle_model.upper(),
             vehicle_color=dto.vehicle_color.upper(),
             vehicle_year=dto.vehicle_year,

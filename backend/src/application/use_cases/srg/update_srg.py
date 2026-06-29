@@ -16,6 +16,7 @@ class UpdateSrgDTO:
     id: UUID
     # Common
     vin: Optional[str] = None
+    placa: Optional[str] = None
     vehicle_model: Optional[str] = None
     vehicle_color: Optional[str] = None
     vehicle_year: Optional[int] = None
@@ -45,7 +46,7 @@ class UpdateSrgUseCase:
             )
 
         str_fields = [
-            "vin", "vehicle_model", "vehicle_color", "sede",
+            "vin", "placa", "vehicle_model", "vehicle_color", "sede",
             "nro_garantia", "warranty_type_code", "warranty_type_name",
             "campaign_code",
         ]

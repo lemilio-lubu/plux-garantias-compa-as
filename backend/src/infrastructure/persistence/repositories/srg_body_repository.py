@@ -125,6 +125,7 @@ class DjangoSrgEventRepository(ISrgEventRepository):
                 "state_from": entity.state_from,
                 "state_to": entity.state_to,
                 "note": entity.note,
+                "location": entity.location,
             },
         )
         return self._to_entity(SrgEvent.objects.select_related("actor", "srg_part").get(id=obj.id))
@@ -142,7 +143,7 @@ class DjangoSrgEventRepository(ISrgEventRepository):
             id=m.id, srg_id=m.srg_id, srg_part_id=m.srg_part_id,
             actor_id=m.actor_id, actor_role=m.actor_role,
             event_type=m.event_type, quantity=m.quantity,
-            state_from=m.state_from, state_to=m.state_to, note=m.note,
+            state_from=m.state_from, state_to=m.state_to, note=m.note, location=m.location,
             actor_label=actor_label, part_label=part_label,
             created_at=m.created_at, updated_at=m.updated_at,
         )

@@ -109,24 +109,26 @@ export function LoginForm() {
       </form>
 
       {/* Demo accounts — one click fills the form */}
-      <div className="mt-8 rounded-lg border border-mist bg-white p-4">
-        <p className="eyebrow text-steel">Cuentas de prueba</p>
-        <div className="mt-3 flex flex-wrap gap-1.5">
-          {DEMO_ACCOUNTS.map((acc) => (
-            <button
-              key={acc.email}
-              type="button"
-              onClick={() => fillAccount(acc.email)}
-              className="rounded-sm border border-mist px-2.5 py-1 text-caption font-medium text-steel transition-colors hover:border-amber hover:bg-amber-soft hover:text-ink"
-            >
-              {acc.role}
-            </button>
-          ))}
+      {process.env.NEXT_PUBLIC_ENABLE_DEMO_ACCOUNTS === "true" && (
+        <div className="mt-8 rounded-lg border border-mist bg-white p-4">
+          <p className="eyebrow text-steel">Cuentas de prueba</p>
+          <div className="mt-3 flex flex-wrap gap-1.5">
+            {DEMO_ACCOUNTS.map((acc) => (
+              <button
+                key={acc.email}
+                type="button"
+                onClick={() => fillAccount(acc.email)}
+                className="rounded-sm border border-mist px-2.5 py-1 text-caption font-medium text-steel transition-colors hover:border-amber hover:bg-amber-soft hover:text-ink"
+              >
+                {acc.role}
+              </button>
+            ))}
+          </div>
+          <p className="mt-3 font-mono text-caption text-steel">
+            Contraseña: <span className="text-ink">{DEMO_PASSWORD}</span>
+          </p>
         </div>
-        <p className="mt-3 font-mono text-caption text-steel">
-          Contraseña: <span className="text-ink">{DEMO_PASSWORD}</span>
-        </p>
-      </div>
+      )}
     </div>
   );
 }

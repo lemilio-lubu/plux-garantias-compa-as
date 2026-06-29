@@ -24,6 +24,7 @@ class RegisterPartMovementDTO:
     actor_id: UUID
     actor_role: str
     note: str = ""
+    location: str = ""
 
 
 @dataclass

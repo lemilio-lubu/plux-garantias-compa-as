@@ -53,6 +53,7 @@ class SrgEvent(BaseModel):
     state_from = models.CharField(max_length=15, blank=True)
     state_to = models.CharField(max_length=15, blank=True)
     note = models.CharField(max_length=255, blank=True)
+    location = models.CharField(max_length=100, blank=True, default="")
 
     class Meta:
         db_table = "srg_events"

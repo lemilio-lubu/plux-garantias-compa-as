@@ -32,6 +32,7 @@ class Srg(BaseModel):
 
     # Common header fields
     vin = models.CharField(max_length=17, db_index=True)
+    placa = models.CharField(max_length=10, db_index=True)
     vehicle_model = models.CharField(max_length=50)
     vehicle_color = models.CharField(max_length=50, blank=True)
     vehicle_year = models.PositiveSmallIntegerField()

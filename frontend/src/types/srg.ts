@@ -9,6 +9,7 @@ export interface Srg {
   concesionaria:  string;
   asesor_id:      string;
   vin:            string;
+  placa:          string;
   vehicle_model:  string;
   vehicle_color:  string;
   vehicle_year:   number;
@@ -82,6 +83,7 @@ export interface SrgEvent {
   state_from:  string;
   state_to:    string;
   note:        string;
+  location:    string;
   created_at:  string;
 }
 
