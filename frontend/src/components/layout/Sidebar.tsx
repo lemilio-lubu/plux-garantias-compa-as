@@ -27,7 +27,7 @@ const NAV_ITEMS: NavItem[] = [
     href: "/dashboard",
     label: "Dashboard",
     icon: LayoutDashboard,
-    roles: ["SUPER_ADMIN", "JEFE_TALLER"],
+    roles: ["SUPER_ADMIN", "JEFE_TALLER", "ASESOR", "BODEGUERO"],
   },
   {
     href: "/srgs",
